@@ -282,6 +282,11 @@ void Label::copySpecialProperties(Widget *widget)
     }
 }
 
+CCLabelTTF* Label::getTextRenderer()
+{
+    return _labelRenderer;
+}
+
 }
 
 NS_CC_END

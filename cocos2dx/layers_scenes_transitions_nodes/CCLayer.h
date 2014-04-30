@@ -134,7 +134,7 @@ public:
     @since v0.8.1
     */
     virtual bool isTouchEnabled();
-    virtual void setTouchEnabled(bool value);
+    virtual void setTouchEnabled(bool value, bool swallow = false);
     
     virtual void setTouchMode(ccTouchesMode mode);
     virtual int getTouchMode();
@@ -182,6 +182,7 @@ private:
     
     int m_nTouchPriority;
     ccTouchesMode m_eTouchMode;
+    bool m_bSwallowTouch;
     
     int  excuteScriptTouchHandler(int nEventType, CCTouch *pTouch);
     int  excuteScriptTouchHandler(int nEventType, CCSet *pTouches);

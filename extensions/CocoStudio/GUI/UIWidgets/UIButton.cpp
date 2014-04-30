@@ -753,6 +753,11 @@ void Button::copySpecialProperties(Widget *widget)
         setPressedActionEnabled(button->_pressedActionEnabled);
     }
 }
+    
+CCLabelTTF* Button::getTextRenderer()
+{
+    return _titleRenderer;
+}
 
 }
 

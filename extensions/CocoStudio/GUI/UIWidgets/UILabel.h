@@ -132,6 +132,10 @@ public:
     void setTextVerticalAlignment(CCVerticalTextAlignment alignment);
     
     CCVerticalTextAlignment getTextVerticalAlignment();
+    
+CC_CONSTRUCTOR_ACCESS:
+    CCLabelTTF *getTextRenderer();
+    
 protected:
     virtual bool init();
     virtual void initRenderer();

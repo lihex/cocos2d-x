@@ -15,7 +15,7 @@
 
 NS_CC_BEGIN
 
-class CCActionIntervalForJs : public CCActionInterval {
+class CC_DLL CCActionIntervalForJs : public CCActionInterval {
 public:
     CCActionIntervalForJs();
     virtual ~CCActionIntervalForJs();
@@ -25,6 +25,7 @@ public:
 
 protected:
     bool m_bIsStartWithTarget;
+    bool m_bIsRunning;
     ccScriptType m_eScriptType;
 };
 

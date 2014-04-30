@@ -51,6 +51,7 @@ CCLayer::CCLayer()
 , m_pScriptAccelerateHandlerEntry(NULL)
 , m_nTouchPriority(0)
 , m_eTouchMode(kCCTouchesAllAtOnce)
+, m_bSwallowTouch(false)
 {
     m_bIgnoreAnchorPointForPosition = true;
     setAnchorPoint(ccp(0.5f, 0.5f));
@@ -121,7 +122,7 @@ void CCLayer::registerWithTouchDispatcher()
         if( m_eTouchMode == kCCTouchesAllAtOnce ) {
             pDispatcher->addStandardDelegate(this, 0);
         } else {
-            pDispatcher->addTargetedDelegate(this, m_nTouchPriority, true);
+            pDispatcher->addTargetedDelegate(this, m_nTouchPriority, m_bSwallowTouch);
         }
     }
 }
@@ -154,11 +155,12 @@ bool CCLayer::isTouchEnabled()
     return m_bTouchEnabled;
 }
 /// isTouchEnabled setter
-void CCLayer::setTouchEnabled(bool enabled)
+void CCLayer::setTouchEnabled(bool enabled, bool swallowTouch)
 {
     if (m_bTouchEnabled != enabled)
     {
         m_bTouchEnabled = enabled;
+        m_bSwallowTouch = swallowTouch;
         if (m_bRunning)
         {
             if (enabled)

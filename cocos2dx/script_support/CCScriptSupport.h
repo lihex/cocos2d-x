@@ -44,6 +44,7 @@ class CCMenuItem;
 class CCNotificationCenter;
 class CCCallFunc;
 class CCAcceleration;
+class CCAction;
 
 enum ccScriptType {
     kScriptTypeNone = 0,
@@ -218,6 +219,12 @@ public:
      @return The integer value returned from the script function.
      */
     virtual int executeNodeEvent(CCNode* pNode, int nAction) = 0;
+    
+    virtual int executeCCActionStartWithTargetEvent(CCAction* pAction, CCNode* pNode) = 0;
+    virtual int executeCCActionUpdateEvent(CCAction* pAction, float dt) = 0;
+    virtual int executeCCActionStepEvent(CCAction* pAction, float dt) = 0;
+    virtual int executeCCActionStopEvent(CCAction* pAction) = 0;
+    
     
     virtual int executeMenuItemEvent(CCMenuItem* pMenuItem) = 0;
     /** Execute a notification event function */

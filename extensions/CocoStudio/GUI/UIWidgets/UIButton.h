@@ -172,6 +172,9 @@ public:
     const char* getTitleFontName() const;
     void setTitlePosByPercent(const cocos2d::CCPoint&);
     void setTitlePosByPercent(float x, float y);
+    
+CC_CONSTRUCTOR_ACCESS:
+    CCLabelTTF *getTextRenderer();
 
 protected:
     virtual bool init();
