@@ -787,6 +787,61 @@ int ScriptingCore::executeNodeEvent(CCNode* pNode, int nAction)
     return 1;
 }
 
+int ScriptingCore::executeCCActionStartWithTargetEvent(CCAction* pAction, CCNode* pTarget)
+{
+    js_proxy_t * p = jsb_get_native_proxy(pAction);
+    if (!p) return 0;
+    
+    js_proxy_t* p2 = jsb_get_native_proxy(pTarget);
+    if (!p2)  return 0;
+
+    jsval retval;
+    jsval dataVal = OBJECT_TO_JSVAL(p2->obj);
+    
+    executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "startWithTarget", 1, &dataVal, &retval);
+    
+    return 1;
+}
+
+int ScriptingCore::executeCCActionUpdateEvent(CCAction* pAction, float dt)
+{
+    js_proxy_t * p = jsb_get_native_proxy(pAction);
+    if (!p) return 0;
+    
+    jsval retval;
+    jsval dataVal = DOUBLE_TO_JSVAL(dt);
+    
+    executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "update", 1, &dataVal, &retval);
+    
+    return 1;
+}
+
+int ScriptingCore::executeCCActionStepEvent(CCAction* pAction, float dt)
+{
+    js_proxy_t * p = jsb_get_native_proxy(pAction);
+    if (!p) return 0;
+    
+    jsval retval;
+    jsval dataVal = DOUBLE_TO_JSVAL(dt);
+    
+    executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "step", 1, &dataVal, &retval);
+    
+    return 1;
+}
+
+int ScriptingCore::executeCCActionStopEvent(CCAction* pAction)
+{
+    js_proxy_t * p = jsb_get_native_proxy(pAction);
+    if (!p) return 0;
+    
+    jsval retval;
+    jsval dataVal = INT_TO_JSVAL(1);
+    
+    executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "stop", 1, &dataVal, &retval);
+    
+    return 1;
+}
+
 int ScriptingCore::executeMenuItemEvent(CCMenuItem* pMenuItem)
 {
     js_proxy_t * p = jsb_get_native_proxy(pMenuItem);

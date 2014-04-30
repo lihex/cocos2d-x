@@ -138,6 +138,12 @@ public:
     void callbackFunc(CCNode *node) const;
 };
 
+class JSAddImageAsyncWrapper: public JSCallbackWrapper {
+public:
+    JSAddImageAsyncWrapper(){}
+    virtual ~JSAddImageAsyncWrapper(){}
+    void loadingCallbackFunc(CCObject *texture);
+};
 
 class JSScheduleWrapper: public JSCallbackWrapper {
     

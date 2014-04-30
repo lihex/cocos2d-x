@@ -900,6 +900,20 @@ JSBool js_callFunc(JSContext *cx, uint32_t argc, jsval *vp)
     return JS_FALSE;
 }
 
+void JSAddImageAsyncWrapper::loadingCallbackFunc(CCObject* texture){
+    JSContext *cx = ScriptingCore::getInstance()->getGlobalContext();
+    JSObject *thisObj = JSVAL_IS_VOID(jsThisObj) ? NULL : JSVAL_TO_OBJECT(jsThisObj);
+    jsval retval;
+    if (jsCallback != JSVAL_VOID)
+    {
+        jsval val = BOOLEAN_TO_JSVAL(JS_TRUE);
+        JS_AddValueRoot(cx, &val);
+        JS_CallFunctionValue(cx, thisObj, jsCallback, 1, &val, &retval);
+        JS_RemoveValueRoot(cx, &val);
+    }
+
+}
+
 JSScheduleWrapper::~JSScheduleWrapper()
 {
     if (_pPureJSTarget) {
@@ -3170,6 +3184,33 @@ JSBool js_cocos2dx_CCFileUtils_getSearchResolutionsOrder(JSContext *cx, uint32_t
     return JS_FALSE;
 }
 
+JSBool js_cocos2dx_CCTextureCache_addImageAsync(JSContext *cx, uint32_t argc, jsval *vp)
+{
+    jsval *argv = JS_ARGV(cx, vp);
+    JSBool ok = JS_TRUE;
+    JSObject *obj = JS_THIS_OBJECT(cx, vp);
+    js_proxy_t *proxy = jsb_get_js_proxy(obj);
+    cocos2d::CCTextureCache *cobj = (cocos2d::CCTextureCache *)(proxy ? proxy->ptr : NULL);
+    JSB_PRECONDITION2(cobj, cx, JS_FALSE, "Invalid Native Object");
+    
+    if (argc == 3) {
+        std::string path;
+        ok &= jsval_to_std_string(cx, argv[0], &path);
+        JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
+        JSAddImageAsyncWrapper *tmpObj = new JSAddImageAsyncWrapper();
+        tmpObj->autorelease();
+        
+        tmpObj->setJSCallbackFunc(argv[1]);
+        tmpObj->setJSCallbackThis(argv[2]);
+
+        cobj->addImageAsync(path.c_str(), tmpObj, callfuncO_selector(JSAddImageAsyncWrapper::loadingCallbackFunc));
+        JS_SET_RVAL(cx, vp, JSVAL_VOID);
+        return JS_TRUE;
+    }
+    JS_ReportError(cx, "wrong number of arguments: %d, was expecting %d", argc, 3);
+    return JS_FALSE;
+}
+
 JSBool js_cocos2dx_CCGLProgram_setUniformLocationWith4f(JSContext *cx, uint32_t argc, jsval *vp)
 {
 	jsval *argv = JS_ARGV(cx, vp);
@@ -3550,6 +3591,9 @@ void register_cocos2dx_js_extensions(JSContext* cx, JSObject* global)
     JS_DefineFunction(cx, jsb_CCFileUtils_prototype, "getStringFromFile", js_cocos2dx_CCFileUtils_getStringFromFile, 1, JSPROP_READONLY | JSPROP_PERMANENT);
     
     JS_DefineFunction(cx, jsb_CCFileUtils_prototype, "getByteArrayFromFile", js_cocos2dx_CCFileUtils_getByteArrayFromFile, 1, JSPROP_READONLY | JSPROP_PERMANENT);
+    
+    JS_DefineFunction(cx, jsb_CCTextureCache_prototype, "addImageAsync", js_cocos2dx_CCTextureCache_addImageAsync, 3, JSPROP_READONLY | JSPROP_PERMANENT);
+    
     
     tmpObj = JSVAL_TO_OBJECT(anonEvaluate(cx, global, "(function () { return cc.BezierBy; })()"));
     JS_DefineFunction(cx, tmpObj, "create", JSB_CCBezierBy_actionWithDuration, 2, JSPROP_READONLY | JSPROP_PERMANENT);
