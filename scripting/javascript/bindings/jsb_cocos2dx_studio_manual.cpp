@@ -32,22 +32,21 @@ JSStudioEventListenerWrapper::~JSStudioEventListenerWrapper()
 {
     if (m_bNeedUnroot)
     {
-        JSObject *thisObj = JSVAL_TO_OBJECT(jsThisObj);
         JSContext *cx = ScriptingCore::getInstance()->getGlobalContext();
-        JS_RemoveObjectRoot(cx, &thisObj);
+        JS_RemoveValueRoot(cx, &jsThisObj);
     }
 }
 
 void JSStudioEventListenerWrapper::setJSCallbackThis(jsval jsThisObj)
 {
     JSCallbackWrapper::setJSCallbackThis(jsThisObj);
-
+    
     JSObject *thisObj = JSVAL_TO_OBJECT(jsThisObj);
     js_proxy *p = jsb_get_js_proxy(thisObj);
     if (!p)
     {
         JSContext *cx = ScriptingCore::getInstance()->getGlobalContext();
-        JS_AddObjectRoot(cx, &thisObj);
+        JS_AddValueRoot(cx, &jsThisObj);
         m_bNeedUnroot = true;
     }
 }
@@ -377,21 +376,35 @@ static JSBool js_cocos2dx_CCArmatureAnimation_setMovementEventCallFunc(JSContext
     if (argc == 2) {
 		jsval *argv = JS_ARGV(cx, vp);
         
-        JSArmatureWrapper *tmpObj = new JSArmatureWrapper();
-        tmpObj->autorelease();
+        CCDictionary *pDict = dynamic_cast<CCDictionary *>(cobj->getUserObject());
         
-        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getUserObject());
-        if (NULL == cobj->getUserObject())
-        {
-            dict = CCDictionary::create();
-            cobj->setUserObject(dict);
+        if (JSVAL_IS_NULL(argv[0]) || JSVAL_IS_NULL(argv[1])) {
+            if (pDict != NULL) {
+                pDict->removeObjectForKey("movementEventCallFunc");
+            }
+            cobj->setMovementEventCallFunc(NULL, NULL);
         }
-        dict->setObject(tmpObj, "moveEvent");
-
-        tmpObj->setJSCallbackFunc(argv[0]);
-        tmpObj->setJSCallbackThis(argv[1]);
+        else {
+            if (pDict == NULL) {
+                pDict = CCDictionary::create();
+                cobj->setUserObject(pDict);
+            }
+            
+            JSArmatureWrapper *tmpObj = new JSArmatureWrapper();
+            
+            
+            tmpObj->setJSCallbackFunc(argv[0]);
+            tmpObj->setJSCallbackThis(argv[1]);
+            
+            pDict->setObject(tmpObj, "movementEventCallFunc");
+            tmpObj->release();
+            
+            cobj->setMovementEventCallFunc(tmpObj, movementEvent_selector(JSArmatureWrapper::movementCallbackFunc));
+        }
         
-        cobj->setMovementEventCallFunc(tmpObj, movementEvent_selector(JSArmatureWrapper::movementCallbackFunc));
+        if (pDict && pDict->count() == 0) {
+            cobj->setUserObject(NULL);
+        }
         
         return JS_TRUE;
     }
@@ -409,21 +422,35 @@ static JSBool js_cocos2dx_CCArmatureAnimation_setFrameEventCallFunc(JSContext *c
     if (argc == 2) {
 		jsval *argv = JS_ARGV(cx, vp);
         
-        JSArmatureWrapper *tmpObj = new JSArmatureWrapper();
-        tmpObj->autorelease();
+        CCDictionary *pDict = dynamic_cast<CCDictionary *>(cobj->getUserObject());
         
-        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getUserObject());
-        if (NULL == cobj->getUserObject())
-        {
-            dict = CCDictionary::create();
-            cobj->setUserObject(dict);
+        if (JSVAL_IS_NULL(argv[0]) || JSVAL_IS_NULL(argv[1])) {
+            if (pDict != NULL) {
+                pDict->removeObjectForKey("frameEventCallFunc");
+            }
+            cobj->setFrameEventCallFunc(NULL, NULL);
         }
-        dict->setObject(tmpObj, "frameEvent");
-
-        tmpObj->setJSCallbackFunc(argv[0]);
-        tmpObj->setJSCallbackThis(argv[1]);
+        else {
+            if (pDict == NULL) {
+                pDict = CCDictionary::create();
+                cobj->setUserObject(pDict);
+            }
+            
+            JSArmatureWrapper *tmpObj = new JSArmatureWrapper();
+            
+            tmpObj->setJSCallbackFunc(argv[0]);
+            tmpObj->setJSCallbackThis(argv[1]);
+            
+            pDict->setObject(tmpObj, "frameEventCallFunc");
+            tmpObj->release();
+            
+            cobj->setFrameEventCallFunc(tmpObj, frameEvent_selector(JSArmatureWrapper::frameCallbackFunc));
+        }
         
-        cobj->setFrameEventCallFunc(tmpObj, frameEvent_selector(JSArmatureWrapper::frameCallbackFunc));
+        if (pDict && pDict->count() == 0) {
+            cobj->setUserObject(NULL);
+        }
+        
         
         return JS_TRUE;
     }
