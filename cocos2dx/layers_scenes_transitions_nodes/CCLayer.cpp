@@ -51,7 +51,7 @@ CCLayer::CCLayer()
 , m_pScriptAccelerateHandlerEntry(NULL)
 , m_nTouchPriority(0)
 , m_eTouchMode(kCCTouchesAllAtOnce)
-, m_bSwallowTouch(false)
+, m_bSwallowTouch(true)
 {
     m_bIgnoreAnchorPointForPosition = true;
     setAnchorPoint(ccp(0.5f, 0.5f));
@@ -157,23 +157,38 @@ bool CCLayer::isTouchEnabled()
 /// isTouchEnabled setter
 void CCLayer::setTouchEnabled(bool enabled, bool swallowTouch)
 {
-    if (m_bTouchEnabled != enabled)
+    if(m_bTouchEnabled == enabled && m_bSwallowTouch == swallowTouch){
+        return;
+    }
+    if (m_bRunning)
     {
-        m_bTouchEnabled = enabled;
-        m_bSwallowTouch = swallowTouch;
-        if (m_bRunning)
-        {
-            if (enabled)
+        if(enabled){
+            // whther need register again
+            if(m_bTouchEnabled)
             {
-                this->registerWithTouchDispatcher();
+                if (m_bSwallowTouch != swallowTouch)
+                {
+                    CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
+                    m_bSwallowTouch = swallowTouch;
+                    this->registerWithTouchDispatcher();
+                }
             }
             else
             {
-                // have problems?
+                m_bSwallowTouch = swallowTouch;
+                this->registerWithTouchDispatcher();
+            }
+        }
+        else
+        {
+            if(m_bTouchEnabled){
                 CCDirector::sharedDirector()->getTouchDispatcher()->removeDelegate(this);
             }
         }
     }
+
+    m_bTouchEnabled = enabled;
+    m_bSwallowTouch = swallowTouch;
 }
 
 void CCLayer::setTouchMode(ccTouchesMode mode)

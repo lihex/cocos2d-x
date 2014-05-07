@@ -134,7 +134,7 @@ public:
     @since v0.8.1
     */
     virtual bool isTouchEnabled();
-    virtual void setTouchEnabled(bool value, bool swallow = false);
+    virtual void setTouchEnabled(bool value, bool swallow = true);
     
     virtual void setTouchMode(ccTouchesMode mode);
     virtual int getTouchMode();
