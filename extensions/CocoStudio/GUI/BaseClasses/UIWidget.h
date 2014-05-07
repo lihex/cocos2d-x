@@ -266,7 +266,7 @@ public:
      * If the node orphan, then nothing happens.
      * @see `removeFromParentAndCleanup(bool)`
      */
-    virtual void removeFromParent();
+    virtual void removeFromParent(bool cleanup);
     /**
      * Removes this node itself from its parent node.
      * If the node orphan, then nothing happens.

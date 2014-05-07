@@ -206,9 +206,9 @@ Widget* Widget::getWidgetParent()
     return dynamic_cast<Widget*>(getParent());
 }
     
-void Widget::removeFromParent()
+void Widget::removeFromParent(bool cleanup)
 {
-    removeFromParentAndCleanup(true);
+    removeFromParentAndCleanup(cleanup);
 }
 
 void Widget::removeFromParentAndCleanup(bool cleanup)
