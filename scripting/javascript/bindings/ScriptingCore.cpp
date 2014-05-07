@@ -759,31 +759,27 @@ int ScriptingCore::executeNodeEvent(CCNode* pNode, int nAction)
     js_proxy_t * p = jsb_get_native_proxy(pNode);
     if (!p) return 0;
 
-    jsval retval;
-    jsval dataVal = INT_TO_JSVAL(1);
-
     if(nAction == kCCNodeOnEnter)
     {
-        executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "onEnter", 1, &dataVal, &retval);
+        executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "onEnter");
         resumeSchedulesAndActions(p);
     }
     else if(nAction == kCCNodeOnExit)
     {
-        executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "onExit", 1, &dataVal, &retval);
+        executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "onExit");
         pauseSchedulesAndActions(p);
     }
     else if(nAction == kCCNodeOnEnterTransitionDidFinish)
     {
-        executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "onEnterTransitionDidFinish", 1, &dataVal, &retval);
+        executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "onEnterTransitionDidFinish");
     }
     else if(nAction == kCCNodeOnExitTransitionDidStart)
     {
-        executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "onExitTransitionDidStart", 1, &dataVal, &retval);
+        executeFunctionWithOwner(OBJECT_TO_JSVAL(p->obj), "onExitTransitionDidStart");
     }
     else if(nAction == kCCNodeOnCleanup) {
         cleanupSchedulesAndActions(p);
     }
-
     return 1;
 }
 
@@ -949,7 +945,7 @@ JSBool ScriptingCore::executeFunctionWithOwner(jsval owner, const char *name, ui
     jsval temp_retval;
     JSContext* cx = this->cx_;
     JSObject* obj = JSVAL_TO_OBJECT(owner);
-    
+
     do
     {
         if (JS_HasProperty(cx, obj, name, &hasAction) && hasAction) {
