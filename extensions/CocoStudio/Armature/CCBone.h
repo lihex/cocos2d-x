@@ -171,6 +171,8 @@ public:
     virtual void setBlendDirty(bool dirty) { m_bBlendDirty = dirty; }
     virtual bool isBlendDirty(void) { return m_bBlendDirty; }
 
+    virtual bool isNormalBlendfunc(){ return m_bNormalBlendfunc; }
+
     virtual CCAffineTransform nodeToArmatureTransform();
     virtual CCAffineTransform nodeToWorldTransform();
 
@@ -235,6 +237,7 @@ protected:
 
     ccBlendFunc m_sBlendFunc; 
     bool m_bBlendDirty;
+    bool m_bNormalBlendfunc;
 };
 
 NS_CC_EXT_END

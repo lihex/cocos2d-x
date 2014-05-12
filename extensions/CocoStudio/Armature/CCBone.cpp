@@ -78,6 +78,7 @@ CCBone::CCBone()
     m_sBlendFunc.src = CC_BLEND_SRC;
     m_sBlendFunc.dst = CC_BLEND_DST;
     m_bBlendDirty = false;
+    m_bNormalBlendfunc = true;
 }
 
 
@@ -386,9 +387,10 @@ void CCBone::setBlendFunc(const ccBlendFunc& blendFunc)
 {
     if (m_sBlendFunc.src != blendFunc.src || m_sBlendFunc.dst != blendFunc.dst)
     {
-        m_sBlendFunc = blendFunc;
         m_bBlendDirty = true;
     }
+    m_sBlendFunc = blendFunc;
+    m_bNormalBlendfunc = (m_sBlendFunc.src == CC_BLEND_SRC && m_sBlendFunc.dst == CC_BLEND_DST);
 }
 
 void CCBone::setZOrder(int zOrder)
