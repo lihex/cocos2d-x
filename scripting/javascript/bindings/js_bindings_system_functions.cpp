@@ -14,6 +14,7 @@
 #include "js_bindings_core.h"
 #include "js_manual_conversions.h"
 #include "js_bindings_system_functions.h"
+#include "cocos2d_specifics.hpp"
 
 USING_NS_CC;
 
@@ -23,17 +24,15 @@ JSBool JSB_localStorageGetItem(JSContext *cx, uint32_t argc, jsval *vp) {
 	JSB_PRECONDITION2( argc == 1, cx, JS_FALSE, "Invalid number of arguments" );
 	jsval *argvp = JS_ARGV(cx,vp);
 	JSBool ok = JS_TRUE;
-	const char* arg0; 
 
-	ok &= jsval_to_charptr( cx, *argvp++, &arg0 );
-	JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
-	const char* ret_val;
+    const char* arg0;
+    std::string arg0_tmp; ok &= jsval_to_std_string(cx, argvp[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+    JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
 
-	ret_val = localStorageGetItem((char*)arg0  );
-
-	jsval ret_jsval = charptr_to_jsval( cx, ret_val);
+	const char* ret;
+	ret = localStorageGetItem((char*)arg0  );
+	jsval ret_jsval = c_string_to_jsval( cx, ret);
 	JS_SET_RVAL(cx, vp, ret_jsval );
-
 	return JS_TRUE;
 }
 
@@ -43,10 +42,10 @@ JSBool JSB_localStorageRemoveItem(JSContext *cx, uint32_t argc, jsval *vp) {
 	JSB_PRECONDITION2( argc == 1, cx, JS_FALSE, "Invalid number of arguments" );
 	jsval *argvp = JS_ARGV(cx,vp);
 	JSBool ok = JS_TRUE;
-	const char* arg0; 
 
-	ok &= jsval_to_charptr( cx, *argvp++, &arg0 );
-	JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
+    const char* arg0;
+    std::string arg0_tmp; ok &= jsval_to_std_string(cx, argvp[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+    JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
 
 	localStorageRemoveItem((char*)arg0  );
 	JS_SET_RVAL(cx, vp, JSVAL_VOID);
@@ -61,9 +60,9 @@ JSBool JSB_localStorageSetItem(JSContext *cx, uint32_t argc, jsval *vp) {
 	JSBool ok = JS_TRUE;
 	const char* arg0; const char* arg1; 
 
-	ok &= jsval_to_charptr( cx, *argvp++, &arg0 );
-	ok &= jsval_to_charptr( cx, *argvp++, &arg1 );
-	JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
+    std::string arg0_tmp; ok &= jsval_to_std_string(cx, argvp[0], &arg0_tmp); arg0 = arg0_tmp.c_str();
+    std::string arg1_tmp; ok &= jsval_to_std_string(cx, argvp[1], &arg1_tmp); arg1 = arg1_tmp.c_str();
+    JSB_PRECONDITION2(ok, cx, JS_FALSE, "Error processing arguments");
 
 	localStorageSetItem((char*)arg0 , (char*)arg1  );
 	JS_SET_RVAL(cx, vp, JSVAL_VOID);
