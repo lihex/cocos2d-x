@@ -168,10 +168,9 @@ public:
     /*
      * Set if blend function is dirty 
      */
-    virtual void setBlendDirty(bool dirty) { m_bBlendDirty = dirty; }
-    virtual bool isBlendDirty(void) { return m_bBlendDirty; }
-
-    virtual bool isNormalBlendfunc(){ return m_bNormalBlendfunc; }
+    inline void setBlendDirty(bool dirty) { m_bBlendDirty = dirty; }
+    inline bool isBlendDirty(void) { return m_bBlendDirty; }
+    inline bool isNormalBlendfunc(){ return m_bNormalBlendfunc; }
 
     virtual CCAffineTransform nodeToArmatureTransform();
     virtual CCAffineTransform nodeToWorldTransform();

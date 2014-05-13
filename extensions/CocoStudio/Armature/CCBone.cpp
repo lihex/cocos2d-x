@@ -385,10 +385,7 @@ CCTween *CCBone::getTween()
 
 void CCBone::setBlendFunc(const ccBlendFunc& blendFunc)
 {
-    if (m_sBlendFunc.src != blendFunc.src || m_sBlendFunc.dst != blendFunc.dst)
-    {
-        m_bBlendDirty = true;
-    }
+    m_bBlendDirty = (m_sBlendFunc.src != blendFunc.src || m_sBlendFunc.dst != blendFunc.dst);
     m_sBlendFunc = blendFunc;
     m_bNormalBlendfunc = (m_sBlendFunc.src == CC_BLEND_SRC && m_sBlendFunc.dst == CC_BLEND_DST);
 }

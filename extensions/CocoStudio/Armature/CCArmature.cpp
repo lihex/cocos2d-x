@@ -490,7 +490,8 @@ void CCArmature::draw()
 
                 CCTextureAtlas *textureAtlas = skin->getTextureAtlas();
                 bool isNormalBlend = bone->isNormalBlendfunc();
-                if(m_pAtlas != textureAtlas || !isNormalBlend)
+                bool isBlendDirty = bone->isBlendDirty();
+                if(m_pAtlas != textureAtlas || !isNormalBlend || isBlendDirty)
                 {
                     if (m_pAtlas)
                     {
@@ -505,7 +506,7 @@ void CCArmature::draw()
 
                 skin->updateTransform();
 
-                if (!isNormalBlend)
+                if (!isNormalBlend || isBlendDirty)
                 {
                     ccBlendFunc func = bone->getBlendFunc();
                     ccGLBlendFunc(func.src, func.dst);
@@ -514,6 +515,9 @@ void CCArmature::draw()
                     m_pAtlas->removeAllQuads();
 
                     ccGLBlendFunc(m_sBlendFunc.src, m_sBlendFunc.dst);
+                    if(isBlendDirty){
+                        bone->setBlendDirty(false);
+                    }
                 }
             }
             break;
