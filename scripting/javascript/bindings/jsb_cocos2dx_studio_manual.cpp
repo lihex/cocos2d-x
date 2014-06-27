@@ -381,6 +381,12 @@ static JSBool js_cocos2dx_CCArmatureAnimation_setMovementEventCallFunc(JSContext
             dict = CCDictionary::create();
             cobj->setScriptObjectDict(dict);
         }
+        dict->setObject(tmpObj, "moveEvent");
+
+        tmpObj->setJSCallbackFunc(argv[0]);
+        tmpObj->setJSCallbackThis(argv[1]);
+        
+        cobj->setMovementEventCallFunc(tmpObj, movementEvent_selector(JSArmatureWrapper::movementCallbackFunc));
         
         return JS_TRUE;
     }
@@ -404,6 +410,12 @@ static JSBool js_cocos2dx_CCArmatureAnimation_setFrameEventCallFunc(JSContext *c
             dict = CCDictionary::create();
             cobj->setScriptObjectDict(dict);
         }
+        dict->setObject(tmpObj, "frameEvent");
+ 
+        tmpObj->setJSCallbackFunc(argv[0]);
+        tmpObj->setJSCallbackThis(argv[1]);
+        
+        cobj->setFrameEventCallFunc(tmpObj, frameEvent_selector(JSArmatureWrapper::frameCallbackFunc));
         
         return JS_TRUE;
     }
