@@ -324,9 +324,6 @@
     <ClCompile Include="..\GUI\CCScrollView\CCTableViewCell.cpp">
       <Filter>GUI\CCScrollView</Filter>
     </ClCompile>
-    <ClCompile Include="..\network\HttpClient.cpp">
-      <Filter>network</Filter>
-    </ClCompile>
     <ClCompile Include="..\CocoStudio\Armature\CCArmature.cpp">
       <Filter>CocoStudio\Armature</Filter>
     </ClCompile>
@@ -552,6 +549,10 @@
     </ClCompile>
     <ClCompile Include="..\CocoStudio\GUI\UIWidgets\UIRichText.cpp">
       <Filter>CocoStudio\GUI\UIWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="..\CocoStudio\Json\CocoLoader.cpp">
+      <Filter>CocoStudio\Json</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1043,6 +1044,11 @@
     </ClInclude>
     <ClInclude Include="..\CocoStudio\GUI\UIWidgets\UIRichText.h">
       <Filter>CocoStudio\GUI\UIWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ExtensionExport.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="..\CocoStudio\Json\CocoLoader.h">
+      <Filter>CocoStudio\Json</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

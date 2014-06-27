@@ -559,6 +559,13 @@
     <ClCompile Include="..\CocoStudio\Reader\WidgetReader\PageViewReader\PageViewReader.cpp">
       <Filter>CocoStudio\Reader\WidgetReader\PageViewReader</Filter>
     </ClCompile>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="..\network\WebSocketWinRT.cpp">
+      <Filter>network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CocoStudio\Json\CocoLoader.cpp">
+      <Filter>CocoStudio\Json</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\AssetsManager\AssetsManager.h">
@@ -857,9 +864,6 @@
     <ClInclude Include="..\CocoStudio\Action\CCActionObject.h">
       <Filter>CocoStudio\Action</Filter>
     </ClInclude>
-    <ClInclude Include="..\CocoStudio\GUI\BaseClasses\UIRootWidget.h">
-      <Filter>CocoStudio\GUI\BaseClasses</Filter>
-    </ClInclude>
     <ClInclude Include="..\CocoStudio\GUI\BaseClasses\UIWidget.h">
       <Filter>CocoStudio\GUI\BaseClasses</Filter>
     </ClInclude>
@@ -887,9 +891,6 @@
     <ClInclude Include="..\CocoStudio\GUI\UIWidgets\UISlider.h">
       <Filter>CocoStudio\GUI\UIWidgets</Filter>
     </ClInclude>
-    <ClInclude Include="..\CocoStudio\GUI\UIWidgets\UISwitch.h">
-      <Filter>CocoStudio\GUI\UIWidgets</Filter>
-    </ClInclude>
     <ClInclude Include="..\CocoStudio\GUI\UIWidgets\UITextField.h">
       <Filter>CocoStudio\GUI\UIWidgets</Filter>
     </ClInclude>
@@ -900,12 +901,6 @@
       <Filter>CocoStudio\GUI\System</Filter>
     </ClInclude>
     <ClInclude Include="..\CocoStudio\GUI\System\UIHelper.h">
-      <Filter>CocoStudio\GUI\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\CocoStudio\GUI\System\UIInputManager.h">
-      <Filter>CocoStudio\GUI\System</Filter>
-    </ClInclude>
-    <ClInclude Include="..\CocoStudio\GUI\System\UILayer.h">
       <Filter>CocoStudio\GUI\System</Filter>
     </ClInclude>
     <ClInclude Include="..\CocoStudio\Json\DictionaryHelper.h">
@@ -936,9 +931,6 @@
       <Filter>CocoStudio\GUI\Layouts</Filter>
     </ClInclude>
     <ClInclude Include="..\CocoStudio\GUI\UIWidgets\ScrollWidget\UIListView.h">
-      <Filter>CocoStudio\GUI\UIWidgets\ScrollWidget</Filter>
-    </ClInclude>
-    <ClInclude Include="..\CocoStudio\GUI\UIWidgets\ScrollWidget\UIListViewEx.h">
       <Filter>CocoStudio\GUI\UIWidgets\ScrollWidget</Filter>
     </ClInclude>
     <ClInclude Include="..\CocoStudio\GUI\UIWidgets\ScrollWidget\UIPageView.h">
@@ -1067,6 +1059,17 @@
     </ClInclude>
     <ClInclude Include="..\CocoStudio\Reader\WidgetReader\PageViewReader\PageViewReader.h">
       <Filter>CocoStudio\Reader\WidgetReader\PageViewReader</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="..\network\WebSocketWinRT.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\network\WebSocket.h">
+      <Filter>network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ExtensionExport.h" />
+    <ClInclude Include="..\CocoStudio\Json\CocoLoader.h">
+      <Filter>CocoStudio\Json</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

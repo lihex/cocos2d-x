@@ -40,7 +40,6 @@ JSStudioEventListenerWrapper::~JSStudioEventListenerWrapper()
 void JSStudioEventListenerWrapper::setJSCallbackThis(jsval jsThisObj)
 {
     JSCallbackWrapper::setJSCallbackThis(jsThisObj);
-    
     JSObject *thisObj = JSVAL_TO_OBJECT(jsThisObj);
     js_proxy *p = jsb_get_js_proxy(thisObj);
     if (!p)
@@ -450,7 +449,6 @@ static JSBool js_cocos2dx_CCArmatureAnimation_setFrameEventCallFunc(JSContext *c
         if (pDict && pDict->count() == 0) {
             cobj->setUserObject(NULL);
         }
-        
         
         return JS_TRUE;
     }
