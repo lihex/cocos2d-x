@@ -198,7 +198,7 @@ void SliderReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoader *p
     
     float barLength = 0.0f;
     stExpCocoNode *stChildArray = pCocoNode->GetChildArray();
-    
+    int percent = 0.0f;
     for (int i = 0; i < pCocoNode->GetChildNum(); ++i) {
         std::string key = stChildArray[i].GetName(pCocoLoader);
         std::string value = stChildArray[i].GetValue();
@@ -210,21 +210,21 @@ void SliderReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoader *p
         }else if(key == "positionType"){
             widget->setPositionType((ui::PositionType)valueToInt(value));
         }else if(key == "sizePercentX"){
-            sizePercentX = valueToFloat(value);
+            _sizePercentX = valueToFloat(value);
         }else if(key == "sizePercentY"){
-            sizePercentY = valueToFloat(value);
+            _sizePercentY = valueToFloat(value);
         }else if(key == "positionPercentX"){
-            positionPercentX = valueToFloat(value);
+            _positionPercentX = valueToFloat(value);
         }else if(key == "positionPercentY"){
-            positionPercentY = valueToFloat(value);
+            _positionPercentY = valueToFloat(value);
         }
         else if(key == "adaptScreen"){
-            isAdaptScreen = valueToBool(value);
+            _isAdaptScreen = valueToBool(value);
         }
         else if (key == "width"){
-            width = valueToFloat(value);
+            _width = valueToFloat(value);
         }else if(key == "height"){
-            height = valueToFloat(value);
+            _height = valueToFloat(value);
         }else if(key == "tag"){
             widget->setTag(valueToInt(value));
         }else if(key == "actiontag"){
@@ -235,9 +235,9 @@ void SliderReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoader *p
             std::string widgetName = value.empty() ? "default" : value;
             widget->setName(widgetName.c_str());
         }else if(key == "x"){
-            position.x = valueToFloat(value);
+            _position.x = valueToFloat(value);
         }else if(key == "y"){
-            position.y = valueToFloat(value);
+            _position.y = valueToFloat(value);
         }else if(key == "scaleX"){
             widget->setScaleX(valueToFloat(value));
         }else if(key == "scaleY"){
@@ -296,32 +296,31 @@ void SliderReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoader *p
         }
         
         else if (key == "opacity") {
-            widget->setOpacity(valueToInt(value));
-        }else if(key == "colorR"){
-            ccColor3B color = widget->getColor();
-            widget->setColor(ccc3(valueToInt(value), color.g, color.b));
+            _opacity = valueToInt(value);
+        }
+        else if(key == "colorR"){
+            _color.r = valueToInt(value);
         }else if(key == "colorG"){
-            ccColor3B color = widget->getColor();
-            widget->setColor(ccc3( color.r, valueToInt(value), color.b));
+            _color.g = valueToInt(value);
         }else if(key == "colorB")
         {
-            ccColor3B color = widget->getColor();
-            widget->setColor(ccc3( color.r,  color.g , valueToInt(value)));
-        }else if(key == "flipX"){
+            _color.b = valueToInt(value);
+        }
+        else if(key == "flipX"){
             widget->setFlipX(valueToBool(value));
         }else if(key == "flipY"){
             widget->setFlipY(valueToBool(value));
         }else if(key == "anchorPointX"){
-            originalAnchorPoint.x = valueToFloat(value);
+            _originalAnchorPoint.x = valueToFloat(value);
         }else if(key == "anchorPointY"){
-            originalAnchorPoint.y = valueToFloat(value);
+            _originalAnchorPoint.y = valueToFloat(value);
         }
         //control custom properties
         else if (key == "scale9Enable") {
             slider->setScale9Enabled(valueToBool(value));
         }
         else if(key == "percent"){
-            slider->setPercent(valueToInt(value));
+            percent = valueToInt(value);
         }else if(key == "barFileNameData"){
             stExpCocoNode *backGroundChildren = stChildArray[i].GetChildArray();
             std::string resType = backGroundChildren[2].GetValue();;
@@ -378,11 +377,14 @@ void SliderReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoader *p
         
     } //end of for loop
     
+    this->endSetBasicProperties(widget);
+
+    
+    slider->setPercent(percent);
     if (slider->isScale9Enabled()) {
         slider->setSize(CCSize(barLength, slider->getContentSize().height));
     }
     
-    this->endSetBasicProperties(widget);
 }
 
 NS_CC_EXT_END

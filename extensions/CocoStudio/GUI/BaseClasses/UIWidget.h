@@ -642,6 +642,26 @@ public:
     void setActionTag(int tag);
 	int getActionTag();
     
+    /**
+     * Returns a user assigned CCDictionary
+     *
+     * @return A user assigned CCDictionary
+     */
+    virtual cocos2d::CCDictionary* getScriptObjectDict() const;
+    /**
+     * Returns a user assigned CCDictionary
+     *
+     * The scriptObjectDict will be retained once in this method,
+     * and the previous scriptObjectDict (if existed) will be relese.
+     * The scriptObjectDict will be released in destructure.
+     *
+     * @param A user assigned CCObject
+     */
+    virtual void setScriptObjectDict(cocos2d::CCDictionary* scriptObjectDict);
+protected:
+    //call back function called when size changed.
+    virtual void onSizeChanged();
+    
 CC_CONSTRUCTOR_ACCESS:
     //initializes state of widget.
     virtual bool init();
@@ -718,6 +738,8 @@ protected:
     
     bool _flippedX;
     bool _flippedY;
+    
+    cocos2d::CCDictionary* _scriptObjectDict;
     
     friend class TouchGroup;
 };

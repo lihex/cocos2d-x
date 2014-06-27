@@ -83,11 +83,11 @@ static JSBool js_cocos2dx_Widget_addTouchEventListener(JSContext *cx, uint32_t a
         JSStudioEventListenerWrapper *tmpObj = new JSStudioEventListenerWrapper();
         tmpObj->autorelease();
         
-        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getUserObject());
+        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getScriptObjectDict());
         if (NULL == dict)
         {
             dict = CCDictionary::create();
-            cobj->setUserObject(dict);
+            cobj->setScriptObjectDict(dict);
         }
         dict->setObject(tmpObj, "widgetTouchEvent");
 
@@ -115,11 +115,11 @@ static JSBool js_cocos2dx_CheckBox_addEventListener(JSContext *cx, uint32_t argc
         JSStudioEventListenerWrapper *tmpObj = new JSStudioEventListenerWrapper();
         tmpObj->autorelease();
         
-        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getUserObject());
+        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getScriptObjectDict());
         if (NULL == dict)
         {
             dict = CCDictionary::create();
-            cobj->setUserObject(dict);
+            cobj->setScriptObjectDict(dict);
         }
         dict->setObject(tmpObj, "checkBoxEventListener");
 
@@ -147,11 +147,11 @@ static JSBool js_cocos2dx_Slider_addEventListener(JSContext *cx, uint32_t argc, 
         JSStudioEventListenerWrapper *tmpObj = new JSStudioEventListenerWrapper();
         tmpObj->autorelease();
         
-        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getUserObject());
+        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getScriptObjectDict());
         if (NULL == dict)
         {
             dict = CCDictionary::create();
-            cobj->setUserObject(dict);
+            cobj->setScriptObjectDict(dict);
         }
         dict->setObject(tmpObj, "sliderEventListener");
 
@@ -179,11 +179,11 @@ static JSBool js_cocos2dx_TextField_addEventListener(JSContext *cx, uint32_t arg
         JSStudioEventListenerWrapper *tmpObj = new JSStudioEventListenerWrapper();
         tmpObj->autorelease();
         
-        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getUserObject());
+        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getScriptObjectDict());
         if (NULL == dict)
         {
             dict = CCDictionary::create();
-            cobj->setUserObject(dict);
+            cobj->setScriptObjectDict(dict);
         }
         dict->setObject(tmpObj, "textfieldEventListener");
 
@@ -211,11 +211,11 @@ static JSBool js_cocos2dx_PageView_addEventListener(JSContext *cx, uint32_t argc
         JSStudioEventListenerWrapper *tmpObj = new JSStudioEventListenerWrapper();
         tmpObj->autorelease();
         
-        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getUserObject());
+        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getScriptObjectDict());
         if (NULL == dict)
         {
             dict = CCDictionary::create();
-            cobj->setUserObject(dict);
+            cobj->setScriptObjectDict(dict);
         }
         dict->setObject(tmpObj, "pageViewEventListener");
 
@@ -243,11 +243,11 @@ static JSBool js_cocos2dx_ScrollView_addEventListener(JSContext *cx, uint32_t ar
         JSStudioEventListenerWrapper *tmpObj = new JSStudioEventListenerWrapper();
         tmpObj->autorelease();
         
-        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getUserObject());
+        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getScriptObjectDict());
         if (NULL == dict)
         {
             dict = CCDictionary::create();
-            cobj->setUserObject(dict);
+            cobj->setScriptObjectDict(dict);
         }
         dict->setObject(tmpObj, "scrollViewEventListener");
         
@@ -275,11 +275,11 @@ static JSBool js_cocos2dx_ListView_addEventListener(JSContext *cx, uint32_t argc
         JSStudioEventListenerWrapper *tmpObj = new JSStudioEventListenerWrapper();
         tmpObj->autorelease();
         
-        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getUserObject());
+        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getScriptObjectDict());
         if (NULL == dict)
         {
             dict = CCDictionary::create();
-            cobj->setUserObject(dict);
+            cobj->setScriptObjectDict(dict);
         }
         dict->setObject(tmpObj, "listViewEventListener");
 
@@ -375,34 +375,11 @@ static JSBool js_cocos2dx_CCArmatureAnimation_setMovementEventCallFunc(JSContext
     if (argc == 2) {
 		jsval *argv = JS_ARGV(cx, vp);
         
-        CCDictionary *pDict = dynamic_cast<CCDictionary *>(cobj->getUserObject());
-        
-        if (JSVAL_IS_NULL(argv[0]) || JSVAL_IS_NULL(argv[1])) {
-            if (pDict != NULL) {
-                pDict->removeObjectForKey("movementEventCallFunc");
-            }
-            cobj->setMovementEventCallFunc(NULL, NULL);
-        }
-        else {
-            if (pDict == NULL) {
-                pDict = CCDictionary::create();
-                cobj->setUserObject(pDict);
-            }
-            
-            JSArmatureWrapper *tmpObj = new JSArmatureWrapper();
-            
-            
-            tmpObj->setJSCallbackFunc(argv[0]);
-            tmpObj->setJSCallbackThis(argv[1]);
-            
-            pDict->setObject(tmpObj, "movementEventCallFunc");
-            tmpObj->release();
-            
-            cobj->setMovementEventCallFunc(tmpObj, movementEvent_selector(JSArmatureWrapper::movementCallbackFunc));
-        }
-        
-        if (pDict && pDict->count() == 0) {
-            cobj->setUserObject(NULL);
+        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getScriptObjectDict());
+        if (NULL == cobj->getScriptObjectDict())
+        {
+            dict = CCDictionary::create();
+            cobj->setScriptObjectDict(dict);
         }
         
         return JS_TRUE;
@@ -421,33 +398,11 @@ static JSBool js_cocos2dx_CCArmatureAnimation_setFrameEventCallFunc(JSContext *c
     if (argc == 2) {
 		jsval *argv = JS_ARGV(cx, vp);
         
-        CCDictionary *pDict = dynamic_cast<CCDictionary *>(cobj->getUserObject());
-        
-        if (JSVAL_IS_NULL(argv[0]) || JSVAL_IS_NULL(argv[1])) {
-            if (pDict != NULL) {
-                pDict->removeObjectForKey("frameEventCallFunc");
-            }
-            cobj->setFrameEventCallFunc(NULL, NULL);
-        }
-        else {
-            if (pDict == NULL) {
-                pDict = CCDictionary::create();
-                cobj->setUserObject(pDict);
-            }
-            
-            JSArmatureWrapper *tmpObj = new JSArmatureWrapper();
-            
-            tmpObj->setJSCallbackFunc(argv[0]);
-            tmpObj->setJSCallbackThis(argv[1]);
-            
-            pDict->setObject(tmpObj, "frameEventCallFunc");
-            tmpObj->release();
-            
-            cobj->setFrameEventCallFunc(tmpObj, frameEvent_selector(JSArmatureWrapper::frameCallbackFunc));
-        }
-        
-        if (pDict && pDict->count() == 0) {
-            cobj->setUserObject(NULL);
+        CCDictionary* dict = static_cast<CCDictionary*>(cobj->getScriptObjectDict());
+        if (NULL == cobj->getScriptObjectDict())
+        {
+            dict = CCDictionary::create();
+            cobj->setScriptObjectDict(dict);
         }
         
         return JS_TRUE;

@@ -69,7 +69,6 @@ void LabelBMFontReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoad
     
     ui::LabelBMFont* labelBMFont = static_cast<ui::LabelBMFont*>(widget);
     
-    
     stExpCocoNode *stChildArray = pCocoNode->GetChildArray();
     
     for (int i = 0; i < pCocoNode->GetChildNum(); ++i) {
@@ -83,21 +82,21 @@ void LabelBMFontReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoad
         }else if(key == "positionType"){
             widget->setPositionType((ui::PositionType)valueToInt(value));
         }else if(key == "sizePercentX"){
-            sizePercentX = valueToFloat(value);
+            _sizePercentX = valueToFloat(value);
         }else if(key == "sizePercentY"){
-            sizePercentY = valueToFloat(value);
+            _sizePercentY = valueToFloat(value);
         }else if(key == "positionPercentX"){
-            positionPercentX = valueToFloat(value);
+            _positionPercentX = valueToFloat(value);
         }else if(key == "positionPercentY"){
-            positionPercentY = valueToFloat(value);
+            _positionPercentY = valueToFloat(value);
         }
         else if(key == "adaptScreen"){
-            isAdaptScreen = valueToBool(value);
+            _isAdaptScreen = valueToBool(value);
         }
         else if (key == "width"){
-            width = valueToFloat(value);
+            _width = valueToFloat(value);
         }else if(key == "height"){
-            height = valueToFloat(value);
+            _height = valueToFloat(value);
         }else if(key == "tag"){
             widget->setTag(valueToInt(value));
         }else if(key == "actiontag"){
@@ -108,9 +107,9 @@ void LabelBMFontReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoad
             std::string widgetName = value.empty() ? "default" : value;
             widget->setName(widgetName.c_str());
         }else if(key == "x"){
-            position.x = valueToFloat(value);
+            _position.x = valueToFloat(value);
         }else if(key == "y"){
-            position.y = valueToFloat(value);
+            _position.y = valueToFloat(value);
         }else if(key == "scaleX"){
             widget->setScaleX(valueToFloat(value));
         }else if(key == "scaleY"){
@@ -169,25 +168,24 @@ void LabelBMFontReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoad
         }
         
         else if (key == "opacity") {
-            widget->setOpacity(valueToInt(value));
-        }else if(key == "colorR"){
-            ccColor3B color = widget->getColor();
-            widget->setColor(ccc3(valueToInt(value), color.g, color.b));
+            _opacity = valueToInt(value);
+        }
+        else if(key == "colorR"){
+            _color.r = valueToInt(value);
         }else if(key == "colorG"){
-            ccColor3B color = widget->getColor();
-            widget->setColor(ccc3( color.r, valueToInt(value), color.b));
+            _color.g = valueToInt(value);
         }else if(key == "colorB")
         {
-            ccColor3B color = widget->getColor();
-            widget->setColor(ccc3( color.r,  color.g , valueToInt(value)));
-        }else if(key == "flipX"){
+            _color.b = valueToInt(value);
+        }
+        else if(key == "flipX"){
             widget->setFlipX(valueToBool(value));
         }else if(key == "flipY"){
             widget->setFlipY(valueToBool(value));
         }else if(key == "anchorPointX"){
-            originalAnchorPoint.x = valueToFloat(value);
+            _originalAnchorPoint.x = valueToFloat(value);
         }else if(key == "anchorPointY"){
-            originalAnchorPoint.y = valueToFloat(value);
+            _originalAnchorPoint.y = valueToFloat(value);
         }
         else if(key == "fileNameData"){
             stExpCocoNode *backGroundChildren = stChildArray[i].GetChildArray();
@@ -204,6 +202,7 @@ void LabelBMFontReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoad
             labelBMFont->setText(value.c_str());
         }
     } //end of for loop
+    
     this->endSetBasicProperties(widget);
 }
 

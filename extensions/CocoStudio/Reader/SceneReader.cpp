@@ -23,6 +23,7 @@
  ****************************************************************************/
 
 #include "SceneReader.h"
+#include <algorithm>
 #include "SimpleAudioEngine.h"
 #include "../Trigger/ObjectFactory.h"
 
@@ -100,7 +101,7 @@ cocos2d::CCNode* SceneReader::createNodeWithSceneFile(const char* pszFileName, A
 						nCount = tpChildArray[15].GetChildNum();
 					}
 					stExpCocoNode *pComponents = tpChildArray[15].GetChildArray();
-					SerData *data = new SerData();
+					
 					for (int i = 0; i < nCount; i++)
 					{
 						stExpCocoNode *subDict = pComponents[i].GetChildArray();
@@ -116,6 +117,7 @@ cocos2d::CCNode* SceneReader::createNodeWithSceneFile(const char* pszFileName, A
 							pCom = ObjectFactory::getInstance()->createComponent(comName);
 						}
 						CCLOG("classname = %s", comName);
+                        SerData *data = new SerData();
 						if (pCom != NULL)
 						{
 							data->prData = NULL;
@@ -139,9 +141,11 @@ cocos2d::CCNode* SceneReader::createNodeWithSceneFile(const char* pszFileName, A
 						}
 						if (_pListener && _pfnSelector)
 						{
-							(_pListener->*_pfnSelector)(pCom, (void*)(&subDict));
+							(_pListener->*_pfnSelector)(pCom, data);
 						}
+                        CC_SAFE_DELETE(data);
 					}
+                    
 
 					setPropertyFromJsonDict(&tCocoLoader, tpRootCocoNode, _pNode);
 					for (std::vector<CCComponent*>::iterator iter = _vecComs.begin(); iter != _vecComs.end(); ++iter)
@@ -245,7 +249,7 @@ CCNode* SceneReader::createObject(const rapidjson::Value &root, cocos2d::CCNode*
 			}
 			const char *comName = DICTOOL->getStringValue_json(subDict, "classname");
 			CCComponent *pCom = ObjectFactory::getInstance()->createComponent(comName);
-			SerData *pData = new SerData();
+            SerData *pData = new SerData();
 			if (pCom != NULL)
 			{
 				pData->prData = &subDict;
@@ -267,12 +271,14 @@ CCNode* SceneReader::createObject(const rapidjson::Value &root, cocos2d::CCNode*
                     CC_SAFE_RELEASE_NULL(pCom);
                 }
             }
-			CC_SAFE_DELETE(pData);
+			
 			if (_pListener && _pfnSelector)
 			{
-				(_pListener->*_pfnSelector)(pCom, (void*)(&subDict));
+				(_pListener->*_pfnSelector)(pCom, pData);
 			}
+            CC_SAFE_DELETE(pData);
 		}
+        
 
         if (parent != NULL)
         {
@@ -335,7 +341,7 @@ cocos2d::CCNode* SceneReader::createObject(CocoLoader *pCocoLoader, stExpCocoNod
 			count = pNodeArray[13].GetChildNum();
 		}
 		stExpCocoNode *pComponents = pNodeArray[13].GetChildArray();
-		SerData *data = new SerData();
+		
 		for (int i = 0; i < count; ++i)
 		{
 			stExpCocoNode *subDict = pComponents[i].GetChildArray();
@@ -351,6 +357,7 @@ cocos2d::CCNode* SceneReader::createObject(CocoLoader *pCocoLoader, stExpCocoNod
 				pCom = ObjectFactory::getInstance()->createComponent(comName);
 			}
 			CCLOG("classname = %s", comName);
+            SerData *data = new SerData();
 			if (pCom != NULL)
 			{
 				data->prData = NULL;
@@ -374,8 +381,9 @@ cocos2d::CCNode* SceneReader::createObject(CocoLoader *pCocoLoader, stExpCocoNod
 			}
 			if (_pListener && _pfnSelector)
 			{
-				(_pListener->*_pfnSelector)(pCom, (void*)(&subDict));
+				(_pListener->*_pfnSelector)(pCom, data);
 			}
+            CC_SAFE_DELETE(data);
 		}
 
 		if (parent != NULL)
